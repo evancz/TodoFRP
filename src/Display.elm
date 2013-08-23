@@ -38,10 +38,12 @@ display (w,h) taskField tasks =
                            |> width 500
           , spacer 500 15 |> color (rgb 141 125 119)
           , spacer 500 1  |> color (rgb 108 125 119)
-          , color (rgb 247 247 247) . container 500 45 midRight <|
-                  width 440 (height 45 taskField)
+          , makeGrey . container 500 45 midRight <|
+                  makeGrey (width 440 (height 45 taskField))
           , flow down <| map displayTask tasks ]
         ]
+
+makeGrey = color (rgb 247 247 247)
 
 btn : String -> Element
 btn str = container 30 30 middle . text . Text.height 28 . bold <| toText str
