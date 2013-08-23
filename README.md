@@ -1,7 +1,7 @@
 # TodoFRP
 
-This is a basic todo list, written with FRP in Elm.
-It demonstrates how FRP and Elm can be used for more traditional web apps.
+This basic todo list demonstrates how FRP and Elm
+can make writing traditional web apps easier.
 
 ### Project Layout
 
