@@ -17,3 +17,16 @@ All of the code for this project lives in the `src/` directory.
 * [Todo.elm](https://github.com/evancz/TodoFRP/blob/master/src/Todo.elm):
   Bring together the model, update, and display to create the todo list.
 
+### Build Locally
+
+If you want to experiment with this code on your own machine, follow these
+steps.
+
+ * Install the Elm compiler.
+ * Navigate to the `src/` directory.
+ * Run `elm --make Todo.elm` to compile.
+ * Open `build/Todo.html` in your browser.
+
+If you want to be fancier, you can run `elm-server` in the `src/` directory.
+Then navigate to [localhost:8000/Todo.elm](http://localhost:8000/Todo.elm).
+The project will be recompiled whenever you refresh that page in your browser.
