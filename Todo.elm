@@ -6,6 +6,6 @@ import Model
 import Update
 import Display
 
-descriptions = lift fst <| foldp Update.update Model.initialState Display.input
+tasks = fst <~ foldp Update.update Model.initialState Display.input
 
-main = Display.display <~ Window.dimensions ~ Display.taskField ~ descriptions
+main = Display.display <~ Window.dimensions ~ Display.taskField ~ tasks
