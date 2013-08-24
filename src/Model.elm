@@ -5,10 +5,10 @@ type Task = { done:Bool, description:String, id:Int }
 
 -- The state of the application is a list of tasks and an
 -- ID for naming tasks uniquely.
-type TodoState = ([Task], Int)
+type TodoState = { tasks:[Task], uid:Int }
 
 initialState : TodoState
-initialState = ([], 0)
+initialState = { tasks=[], uid=0 }
 
 -- Actions the user can take to modify the TodoState
 data Action = Add String | Remove Int

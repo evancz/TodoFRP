@@ -4,13 +4,15 @@ import open Model
 
 -- Update the TodoState based on a user Action.
 update : Action -> TodoState -> TodoState
-update action (tasks,uid) =
+update action state =
     case action of
       -- ignore if the user tries to add an empty task
-      Add [] -> (tasks, uid)
+      Add [] -> state
 
       -- add a task with a unique ID
-      Add dsc -> (Task False dsc uid :: tasks, uid + 1)
+      Add dsc -> { tasks = Task False dsc state.uid :: state.tasks
+                 , uid   = state.uid + 1
+                 }
 
       -- remove tasks with the given ID
-      Remove n -> (filter (\t -> t.id /= n) tasks, uid)
+      Remove n -> { state | tasks <- filter (\t -> t.id /= n) state.tasks }
