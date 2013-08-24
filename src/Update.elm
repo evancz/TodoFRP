@@ -7,12 +7,15 @@ update : Action -> TodoState -> TodoState
 update action state =
     case action of
       -- ignore if the user tries to add an empty task
-      Add [] -> state
+      Add "" -> state
 
       -- add a task with a unique ID
-      Add dsc -> { tasks = Task False dsc state.uid :: state.tasks
-                 , uid   = state.uid + 1
-                 }
+      Add taskDescription ->
+          { tasks = Task False taskDescription state.uid :: state.tasks
+          , uid   = state.uid + 1 }
 
-      -- remove tasks with the given ID
-      Remove n -> { state | tasks <- filter (\t -> t.id /= n) state.tasks }
+      -- keep tasks that do not have the removed ID
+      Remove id ->
+          { state |
+              tasks <- filter (\task -> task.id /= id) state.tasks
+          }
