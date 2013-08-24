@@ -1,11 +1,15 @@
 module Todo where
 
 import Window
+import Model (initialState)
+import Update (update)
+import Display (display, taskFeild, input)
 
-import Model
-import Update
-import Display
 
-tasks = fst <~ foldp Update.update Model.initialState Display.input
+-- Use the UI inputs to update starting from the initial state.
+tasks : Signal [Task]
+tasks = fst <~ foldp update initialState input
 
-main = Display.display <~ Window.dimensions ~ Display.taskField ~ tasks
+--Show everything on screen.
+main : Signal Element
+main = display <~ Window.dimensions ~ taskField ~ tasks
