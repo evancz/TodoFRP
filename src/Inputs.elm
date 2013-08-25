@@ -19,8 +19,7 @@ taskField = Input.simpleDynamicField ""
 --   Just use the current field state in most cases,
 --   but if the user presses enter, clear the field.
 fieldState : Signal String
-fieldState =
-    merge taskField.events (sampleOn entered (constant ""))
+fieldState = merge taskField.events (sampleOn entered (constant ""))
 
 -- Keep track of buttons for deleting tasks.
 taskDelete = Input.customButtons 0
