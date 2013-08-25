@@ -11,10 +11,12 @@ All of the code for this project lives in the `src/` directory.
   Representation of the todo list application.
 * [Update.elm](https://github.com/evancz/TodoFRP/blob/master/src/Update.elm):
   Describes how to update the todo list based on user's actions.
+* [Inputs.elm](https://github.com/evancz/TodoFRP/blob/master/src/Inputs.elm):
+  Describe the UI input elements and the actions the user's actions.
 * [Display.elm](https://github.com/evancz/TodoFRP/blob/master/src/Display.elm):
-  How to display our model on screen. Describes interactive UI elements.
+  How to display our model and inputs on screen.
 * [Todo.elm](https://github.com/evancz/TodoFRP/blob/master/src/Todo.elm):
-  Bring together the model, update, and display to create the todo list.
+  Bring together the model, update, inputs, and display to create the todo list.
 
 ### Build Locally
 

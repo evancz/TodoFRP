@@ -1,7 +1,7 @@
 -- Create the interactive UI elements needed for this program.
 -- The state of these elements is needed by the display *and* to
 -- update our model.
-module Inputs where
+module Inputs (taskField, taskDelete, actions, fieldState) where
 
 import Graphics.Input as Input
 import Keyboard
