@@ -1,15 +1,15 @@
+-- Create the interactive UI elements needed for this program.
+-- The state of these elements is needed by the display *and* to
+-- update our model.
 module Inputs where
 
 import Graphics.Input as Input
 import Keyboard
 import Model (Action, Add, Remove)
 
--- Create the interactive UI elements needed for this program.
--- The state of these elements is needed by the display *and* to
--- update our model.
-
 -- Signal that updates when the enter key is pressed. We will use
--- it to sample other signals.
+-- it to sample other signals. Actual value of this signal is not
+-- important.
 entered = keepIf id True Keyboard.enter
 
 -- Create a dynamic field for task input
@@ -20,7 +20,7 @@ taskField = Input.fields Input.emptyFieldState
 --   but if the user presses enter, clear the field.
 fieldState : Signal Input.FieldState
 fieldState =
-    merge taskField.events (sampleOn entered (constant Input.emptyFieldState))
+    merge taskField.events <| sampleOn entered (constant Input.emptyFieldState)
 
 -- Sample the field's string value when the user presses enter.
 descriptions : Signal String
