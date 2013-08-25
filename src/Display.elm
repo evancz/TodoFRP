@@ -1,29 +1,31 @@
-module Display (display, input, fieldState) where
+module Display (display) where
 
-import Graphics.Input as Input
-import Keyboard
-import open Model
+import Graphics.Input (FieldState)
+import Model (Task)
+import open Inputs
 
 -- Actually display the entire Todo list.
-display : (Int,Int) -> Input.FieldState -> [Task] -> Element
+display : (Int,Int) -> FieldState -> [Task] -> Element
 display (w,h) fieldState tasks =
-  let pos = midTopAt (relative 0.5) (absolute 40)
-      grey = rgb 247 247 247
-  in  layers
-        [ tiledImage w h "/texture.png"
-        , [markdown|<style>input:focus { outline: none; }</style>|]
-        , container w h pos <|
-          flow down
-          [ toText "todos" |> Text.height 48
-                           |> Text.color (rgb 179 179 179)
-                           |> centered
-                           |> width 500
-          , spacer 500 15 |> color (rgb 141 125 119)
-          , spacer 500 1  |> color (rgb 108 125 119)
-          , color grey . container 500 45 midRight . color grey . width 440 . height 45 <|
-                  taskField.field id "What needs to be done?" fieldState
-          , flow down <| map displayTask tasks ]
-        ]
+  let pos = midTopAt (relative 0.5) (absolute 40) in
+  layers [ tiledImage w h "/texture.png"
+         , container w h pos <| flow down [ header
+                                          , inputBar fieldState
+                                          , flow down (map displayTask tasks) ]
+         ]
+
+header : Element
+header = 
+    flow down
+      [ width 500 . centered . Text.color (rgb 179 179 179) . Text.height 48 <| toText "todos"
+      , color (rgb 141 125 119) (spacer 500 15)
+      , color (rgb 108 125 119) (spacer 500 1 ) ]
+
+inputBar : FieldState -> Element
+inputBar fieldState =
+    let grey = rgb 247 247 247 in
+    color grey . container 500 45 midRight . color grey . width 440 . height 45 <|
+          taskField.field id "What needs to be done?" fieldState
 
 -- Display a specific task.
 displayTask : Task -> Element
@@ -37,28 +39,3 @@ displayTask task =
                    , taskDelete.customButton task.id
                          (btn <| Text.color grey) (btn id) (btn bold)
                    ]
-
-
--- Now we create the interactive UI elements needed for this program.
--- The state of these elements is needed by the display *and* to
--- update our model.
-
--- Create a dynamic text field and keep track of when the user presses enter.
-taskField = Input.fields Input.emptyFieldState
-entered = keepIf id True Keyboard.enter
-
--- This is what the user has typed in.
--- It gets cleared when the user presses Enter.
-fieldState : Signal Input.FieldState
-fieldState =
-    let resetOnEnter = sampleOn entered (constant Input.emptyFieldState)
-    in  merge taskField.events resetOnEnter
-
--- Keep track of buttons for deleting tasks.
-taskDelete = Input.customButtons 0
-
--- Merge all UI inputs into the input signal.
-input : Signal Action
-input = merges [ Remove <~ taskDelete.events,
-                 (\field -> Add field.string) <~ sampleOn entered taskField.events ]
-

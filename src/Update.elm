@@ -11,7 +11,7 @@ update action state =
 
       -- add a task with a unique ID
       Add taskDescription ->
-          { tasks = Task False taskDescription state.uid :: state.tasks
+          { tasks = (Task False taskDescription state.uid) :: state.tasks
           , uid   = state.uid + 1 }
 
       -- keep tasks that do not have the removed ID
