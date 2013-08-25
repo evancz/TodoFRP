@@ -1,16 +1,15 @@
 module Display (display) where
 
-import Graphics.Input (FieldState)
 import Model (Task)
-import open Inputs
+import Inputs (taskField, taskDelete)
 
 -- Actually display the entire Todo list.
-display : (Int,Int) -> FieldState -> [Task] -> Element
-display (w,h) fieldState tasks =
+display : (Int,Int) -> String -> [Task] -> Element
+display (w,h) fieldContent tasks =
   let pos = midTopAt (relative 0.5) (absolute 40) in
   layers [ tiledImage w h "/texture.png"
          , container w h pos <| flow down [ header
-                                          , inputBar fieldState
+                                          , inputBar fieldContent
                                           , flow down (map displayTask tasks) ]
          ]
 
@@ -21,11 +20,11 @@ header =
       , color (rgb 141 125 119) (spacer 500 15)
       , color (rgb 108 125 119) (spacer 500 1 ) ]
 
-inputBar : FieldState -> Element
-inputBar fieldState =
+inputBar : String -> Element
+inputBar fieldContent =
     let grey = rgb 247 247 247 in
     color grey . container 500 45 midRight . color grey . width 440 . height 45 <|
-          taskField.field id "What needs to be done?" fieldState
+          taskField.field "What needs to be done?" fieldContent
 
 -- Display a specific task.
 displayTask : Task -> Element
