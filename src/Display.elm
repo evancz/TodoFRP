@@ -3,6 +3,19 @@ module Display (display) where
 import Model (Task)
 import Inputs (taskField, taskDelete)
 
+-- Constants for easy tweaking
+todoWidth   = 500
+leftPadding = 60
+buttonWidth = 30
+taskHeight  = 30
+
+titleColor   = rgb 179 179 179
+spacerColor1 = rgb 141 125 119
+spacerColor2 = rgb 108 125 119
+inputColor   = rgb 247 247 247
+taskColor    = rgba 255 255 255 0.9
+
+
 -- Actually display the entire Todo list.
 display : (Int,Int) -> String -> [Task] -> Element
 display (w,h) fieldContent tasks =
@@ -29,24 +42,11 @@ inputBar fieldContent =
 -- Display a specific task.
 displayTask : Task -> Element
 displayTask task =
-    let btn clr = let x = text . Text.height 28 . Text.color clr <| toText "&times;"
+    let btn clr = let x = text . Text.height (taskHeight-4) . Text.color clr <| toText "&times;"
                   in container buttonWidth taskHeight middle x
         taskWidth = todoWidth - leftPadding - buttonWidth
-    in color taskColor . container todoWidth 30 midRight <|
+    in color taskColor . container todoWidth taskHeight midRight <|
        flow right [ container taskWidth taskHeight midLeft . text <| toText task.description
                   , taskDelete.customButton task.id
                         (btn inputColor) (btn titleColor) (btn red)
                   ]
-
--- Dimensions for easy tweaking
-todoWidth   = 500
-leftPadding = 60
-buttonWidth = 30
-taskHeight  = 30
-
--- Colors for easy tweaking
-titleColor   = rgb 179 179 179
-spacerColor1 = rgb 141 125 119
-spacerColor2 = rgb 108 125 119
-inputColor   = rgb 247 247 247
-taskColor    = rgba 255 255 255 0.9
