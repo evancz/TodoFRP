@@ -13,18 +13,19 @@ import Model (Action, Add, Remove)
 entered = keepIf id True Keyboard.enter
 
 -- Create a dynamic field for task input
-taskField = Input.simpleDynamicField ""
+taskField = Input.fields Input.emptyFieldState
 
 -- Current state of the input field:
 --   Just use the current field state in most cases,
 --   but if the user presses enter, clear the field.
-fieldState : Signal String
-fieldState = merge taskField.events (sampleOn entered (constant ""))
+fieldState : Signal Input.FieldState
+fieldState = merge taskField.events
+                   (sampleOn entered (constant Input.emptyFieldState))
 
 -- Keep track of buttons for deleting tasks.
 taskDelete = Input.customButtons 0
 
 -- Merge all UI inputs into Actions.
 actions : Signal Action
-actions = merge (Add <~ sampleOn entered taskField.events)
+actions = merge (Add <~ sampleOn entered (.string <~ taskField.events))
                 (Remove <~ taskDelete.events)
