@@ -2,6 +2,9 @@
 
 This basic todo list demonstrates how FRP and Elm
 can make writing traditional web apps easier.
+Currently it is quite simple, but that makes it a
+nice resource for learning more about making "traditional
+webapps" with Elm.
 
 ### Project Layout
 
