@@ -6,6 +6,22 @@ Currently it is quite simple, but that makes it a
 nice resource for learning more about making "traditional
 webapps" with Elm.
 
+### Build Locally
+
+After installing the Elm compiler, follow these steps:
+
+```bash
+git clone https://github.com/evancz/TodoFRP.git
+cd TodoFRP/src/
+elm --make Todo.elm
+```
+
+Then open `build/Todo.html` in your browser.
+
+If you want to be fancier, you can run `elm-server` in the `src/` directory.
+Then navigate to [localhost:8000/Todo.elm](http://localhost:8000/Todo.elm).
+The project will be recompiled whenever you refresh that page in your browser.
+
 ### Project Layout
 
 All of the code for this project lives in the `src/` directory.
@@ -20,17 +36,3 @@ All of the code for this project lives in the `src/` directory.
   How to display our model and inputs on screen.
 * [Todo.elm](https://github.com/evancz/TodoFRP/blob/master/src/Todo.elm):
   Bring together the model, update, inputs, and display to create the todo list.
-
-### Build Locally
-
-If you want to experiment with this code on your own machine, follow these
-steps.
-
- * Install the Elm compiler.
- * Navigate to the `src/` directory.
- * Run `elm --make Todo.elm` to compile.
- * Open `build/Todo.html` in your browser.
-
-If you want to be fancier, you can run `elm-server` in the `src/` directory.
-Then navigate to [localhost:8000/Todo.elm](http://localhost:8000/Todo.elm).
-The project will be recompiled whenever you refresh that page in your browser.
