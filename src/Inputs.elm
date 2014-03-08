@@ -4,15 +4,16 @@ The Inputs we create will provide handles for our display to give us new
 events, and from there, it will provide data to update our program.
 -}
 
-import Graphics.Input (Input, input, FieldContent, noContent)
+import Graphics.Input (Input, input)
+import Graphics.Input.Field as Field
 import Keyboard
 import Model (Action, Add, Remove)
 
 ----  Inputs  ----
 
 {-| An Input to keep track of the primary text field. -}
-field : Input FieldContent
-field = input noContent
+field : Input Field.Content
+field = input Field.noContent
 
 {-| An Input to keep track of requests to remove tasks. -}
 remove : Input Int
@@ -24,9 +25,9 @@ remove = input 0
 {-| Current content of the primary input field. Normally uses whatever the user
 types in, but if the user presses enter it clears the field.
 -}
-fieldContent : Signal FieldContent
+fieldContent : Signal Field.Content
 fieldContent =
-    merge field.signal (always noContent <~ entered)
+    merge field.signal (always Field.noContent <~ entered)
 
 {-| Merge all UI inputs into Actions. -}
 actions : Signal Action
