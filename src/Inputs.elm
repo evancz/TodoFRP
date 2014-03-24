@@ -1,31 +1,41 @@
--- Create the interactive UI elements needed for this program.
--- The state of these elements is needed by the display *and* to
--- update our model.
-module Inputs (taskField, taskDelete, actions, fieldState) where
+module Inputs (field, remove, actions, fieldContent) where
+{-| Create the Signals and Inputs needed to model interaction in this program.
+The Inputs we create will provide handles for our display to give us new
+events, and from there, it will provide data to update our program.
+-}
 
-import Graphics.Input as Input
+import Graphics.Input (Input, input)
+import Graphics.Input.Field as Field
 import Keyboard
 import Model (Action, Add, Remove)
 
--- Signal that updates when the enter key is pressed. We will use
--- it to sample other signals. Actual value of this signal is not
--- important.
-entered = keepIf id True Keyboard.enter
+----  Inputs  ----
 
--- Create a dynamic field for task input
-taskField = Input.fields Input.emptyFieldState
+{-| An Input to keep track of the primary text field. -}
+field : Input Field.Content
+field = input Field.noContent
 
--- Current state of the input field:
---   Just use the current field state in most cases,
---   but if the user presses enter, clear the field.
-fieldState : Signal Input.FieldState
-fieldState = merge taskField.events
-                   (sampleOn entered (constant Input.emptyFieldState))
+{-| An Input to keep track of requests to remove tasks. -}
+remove : Input Int
+remove = input 0
 
--- Keep track of buttons for deleting tasks.
-taskDelete = Input.customButtons 0
 
--- Merge all UI inputs into Actions.
+----  Useful Signals  ----
+
+{-| Current content of the primary input field. Normally uses whatever the user
+types in, but if the user presses enter it clears the field.
+-}
+fieldContent : Signal Field.Content
+fieldContent =
+    merge field.signal (always Field.noContent <~ entered)
+
+{-| Merge all UI inputs into Actions. -}
 actions : Signal Action
-actions = merge (Add <~ sampleOn entered (.string <~ taskField.events))
-                (Remove <~ taskDelete.events)
+actions = merge (Add <~ sampleOn entered (.string <~ field.signal))
+                (Remove <~ remove.signal)
+
+{-| Signal that updates when the enter key is pressed. We will use it to sample
+other signals. Actual value of this signal is not important.
+-}
+entered : Signal ()
+entered = always () <~ keepIf id True Keyboard.enter

@@ -1,6 +1,6 @@
 module Update where
 
-import open Model
+import Model (..)
 
 -- Update the TodoState based on a user Action.
 update : Action -> TodoState -> TodoState
