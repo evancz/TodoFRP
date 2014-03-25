@@ -1,4 +1,4 @@
-# TodoFRP – [live demo](http://elm-lang.org/misc/Todo.html)
+# TodoFRP – [live demo](http://evancz.github.io/TodoFRP)
 
 This basic todo list demonstrates how FRP and Elm
 can make writing traditional web apps easier.
