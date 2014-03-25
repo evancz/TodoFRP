@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="UTF-8"><title>Todo</title><script type="text/javascript" src="/Users/evan/Library/Haskell/ghc-7.6.3/lib/Elm-0.12/share/elm-runtime.js"></script><script type="text/javascript">Elm.Todo = Elm.Todo || {};
+Elm.Todo.make = function (_elm) {
+   "use strict";
+   _elm.Todo = _elm.Todo || {};
+   if (_elm.Todo.values)
+   return _elm.Todo.values;
+   var _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   _E = _N.Error.make(_elm),
+   _J = _N.JavaScript.make(_elm),
+   $moduleName = "Todo";
+   var Basics = Elm.Basics.make(_elm);
+   var Color = Elm.Color.make(_elm);
+   var Display = Elm.Display.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Collage = Elm.Graphics.Collage.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Element = Elm.Graphics.Element.make(_elm);
+   var Inputs = Elm.Inputs.make(_elm);
+   var List = Elm.List.make(_elm);
+   var Maybe = Elm.Maybe.make(_elm);
+   var Model = Elm.Model.make(_elm);
+   var Native = Native || {};
+   Native.Ports = Elm.Native.Ports.make(_elm);
+   var Signal = Elm.Signal.make(_elm);
+   var String = Elm.String.make(_elm);
+   var Text = Elm.Text.make(_elm);
+   var Time = Elm.Time.make(_elm);
+   var Update = Elm.Update.make(_elm);
+   var Window = Elm.Window.make(_elm);
+   var _op = {};
+   var currentState = A3(Signal.foldp,
+   Update.update,
+   Model.initialState,
+   Inputs.actions);
+   var main = A2(Signal._op["~"],
+   A2(Signal._op["~"],
+   A2(Signal._op["<~"],
+   Display.display,
+   Window.dimensions),
+   Inputs.fieldContent),
+   A2(Signal.lift,
+   function (_) {
+      return _.tasks;
+   },
+   currentState));
+   _elm.Todo.values = {_op: _op
+                      ,currentState: currentState
+                      ,main: main};
+   return _elm.Todo.values;
+};Elm.Display = Elm.Display || {};
+Elm.Display.make = function (_elm) {
+   "use strict";
+   _elm.Display = _elm.Display || {};
+   if (_elm.Display.values)
+   return _elm.Display.values;
+   var _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   _E = _N.Error.make(_elm),
+   _J = _N.JavaScript.make(_elm),
+   $moduleName = "Display";
+   var Basics = Elm.Basics.make(_elm);
+   var Color = Elm.Color.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Collage = Elm.Graphics.Collage.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Element = Elm.Graphics.Element.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Input = Elm.Graphics.Input.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Input = Graphics.Input || {};
+   Graphics.Input.Field = Elm.Graphics.Input.Field.make(_elm);
+   var Inputs = Elm.Inputs.make(_elm);
+   var List = Elm.List.make(_elm);
+   var Maybe = Elm.Maybe.make(_elm);
+   var Model = Elm.Model.make(_elm);
+   var Native = Native || {};
+   Native.Ports = Elm.Native.Ports.make(_elm);
+   var Signal = Elm.Signal.make(_elm);
+   var String = Elm.String.make(_elm);
+   var Text = Elm.Text.make(_elm);
+   var Time = Elm.Time.make(_elm);
+   var _op = {};
+   var todoStyle = {_: {}
+                   ,highlight: Graphics.Input.Field.noHighlight
+                   ,outline: Graphics.Input.Field.noOutline
+                   ,padding: Graphics.Input.Field.uniformly(0)
+                   ,style: Text.defaultStyle};
+   var taskColor = A4(Color.rgba,
+   255,
+   255,
+   255,
+   0.9);
+   var inputColor = A3(Color.rgb,
+   247,
+   247,
+   247);
+   var spacerColor2 = A3(Color.rgb,
+   108,
+   125,
+   119);
+   var spacerColor1 = A3(Color.rgb,
+   141,
+   125,
+   119);
+   var titleColor = A3(Color.rgb,
+   179,
+   179,
+   179);
+   var taskHeight = 30;
+   var buttonWidth = 30;
+   var leftPadding = 60;
+   var todoWidth = 500;
+   var header = A2(Graphics.Element.flow,
+   Graphics.Element.down,
+   _J.toList([Graphics.Element.width(todoWidth)(Text.centered(Text.color(titleColor)(Text.height(48)(Text.toText("todos")))))
+             ,A2(Graphics.Element.color,
+             spacerColor1,
+             A2(Graphics.Element.spacer,
+             todoWidth,
+             15))
+             ,A2(Graphics.Element.color,
+             spacerColor2,
+             A2(Graphics.Element.spacer,
+             todoWidth,
+             1))]));
+   var inputBar = function (fieldContent) {
+      return Graphics.Element.color(inputColor)(A3(Graphics.Element.container,
+      todoWidth,
+      45,
+      Graphics.Element.midRight)(Graphics.Element.color(inputColor)(A2(Graphics.Element.size,
+      todoWidth - leftPadding,
+      45)(A5(Graphics.Input.Field.field,
+      todoStyle,
+      Inputs.field.handle,
+      Basics.id,
+      "What needs to be done?",
+      fieldContent)))));
+   };
+   var displayTask = function (task) {
+      return function () {
+         var taskWidth = todoWidth - leftPadding - buttonWidth;
+         var btn = function (clr) {
+            return function () {
+               var x = Text.leftAligned(Text.height(taskHeight - 4)(Text.color(clr)(Text.toText("X"))));
+               return A4(Graphics.Element.container,
+               buttonWidth,
+               taskHeight,
+               Graphics.Element.middle,
+               x);
+            }();
+         };
+         return Graphics.Element.color(taskColor)(A3(Graphics.Element.container,
+         todoWidth,
+         taskHeight,
+         Graphics.Element.midRight)(A2(Graphics.Element.flow,
+         Graphics.Element.right,
+         _J.toList([A3(Graphics.Element.container,
+                   taskWidth,
+                   taskHeight,
+                   Graphics.Element.midLeft)(Text.leftAligned(Text.toText(task.description)))
+                   ,A5(Graphics.Input.customButton,
+                   Inputs.remove.handle,
+                   task.id,
+                   btn(inputColor),
+                   btn(titleColor),
+                   btn(Color.red))]))));
+      }();
+   };
+   var display = F3(function (_v0,
+   fieldContent,
+   tasks) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var pos = A2(Graphics.Element.midTopAt,
+                 Graphics.Element.relative(0.5),
+                 Graphics.Element.absolute(40));
+                 return Graphics.Element.layers(_J.toList([A3(Graphics.Element.tiledImage,
+                                                          _v0._0,
+                                                          _v0._1,
+                                                          "/texture.png")
+                                                          ,A3(Graphics.Element.container,
+                                                          _v0._0,
+                                                          _v0._1,
+                                                          pos)(A2(Graphics.Element.flow,
+                                                          Graphics.Element.down,
+                                                          _J.toList([header
+                                                                    ,inputBar(fieldContent)
+                                                                    ,A2(Graphics.Element.flow,
+                                                                    Graphics.Element.down,
+                                                                    A2(List.map,
+                                                                    displayTask,
+                                                                    tasks))])))]));
+              }();}
+         _E.Case($moduleName,
+         "between lines 24 and 29");
+      }();
+   });
+   _elm.Display.values = {_op: _op
+                         ,display: display};
+   return _elm.Display.values;
+};Elm.Inputs = Elm.Inputs || {};
+Elm.Inputs.make = function (_elm) {
+   "use strict";
+   _elm.Inputs = _elm.Inputs || {};
+   if (_elm.Inputs.values)
+   return _elm.Inputs.values;
+   var _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   _E = _N.Error.make(_elm),
+   _J = _N.JavaScript.make(_elm),
+   $moduleName = "Inputs";
+   var Basics = Elm.Basics.make(_elm);
+   var Color = Elm.Color.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Collage = Elm.Graphics.Collage.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Element = Elm.Graphics.Element.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Input = Elm.Graphics.Input.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Input = Graphics.Input || {};
+   Graphics.Input.Field = Elm.Graphics.Input.Field.make(_elm);
+   var Keyboard = Elm.Keyboard.make(_elm);
+   var List = Elm.List.make(_elm);
+   var Maybe = Elm.Maybe.make(_elm);
+   var Model = Elm.Model.make(_elm);
+   var Native = Native || {};
+   Native.Ports = Elm.Native.Ports.make(_elm);
+   var Signal = Elm.Signal.make(_elm);
+   var String = Elm.String.make(_elm);
+   var Text = Elm.Text.make(_elm);
+   var Time = Elm.Time.make(_elm);
+   var _op = {};
+   var entered = A2(Signal._op["<~"],
+   Basics.always({ctor: "_Tuple0"}),
+   A3(Signal.keepIf,
+   Basics.id,
+   true,
+   Keyboard.enter));
+   var remove = Graphics.Input.input(0);
+   var field = Graphics.Input.input(Graphics.Input.Field.noContent);
+   var fieldContent = A2(Signal.merge,
+   field.signal,
+   A2(Signal._op["<~"],
+   Basics.always(Graphics.Input.Field.noContent),
+   entered));
+   var actions = A2(Signal.merge,
+   A2(Signal._op["<~"],
+   Model.Add,
+   A2(Signal.sampleOn,
+   entered,
+   A2(Signal._op["<~"],
+   function (_) {
+      return _.string;
+   },
+   field.signal))),
+   A2(Signal._op["<~"],
+   Model.Remove,
+   remove.signal));
+   _elm.Inputs.values = {_op: _op
+                        ,field: field
+                        ,remove: remove
+                        ,actions: actions
+                        ,fieldContent: fieldContent};
+   return _elm.Inputs.values;
+};Elm.Update = Elm.Update || {};
+Elm.Update.make = function (_elm) {
+   "use strict";
+   _elm.Update = _elm.Update || {};
+   if (_elm.Update.values)
+   return _elm.Update.values;
+   var _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   _E = _N.Error.make(_elm),
+   _J = _N.JavaScript.make(_elm),
+   $moduleName = "Update";
+   var Basics = Elm.Basics.make(_elm);
+   var Color = Elm.Color.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Collage = Elm.Graphics.Collage.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Element = Elm.Graphics.Element.make(_elm);
+   var List = Elm.List.make(_elm);
+   var Maybe = Elm.Maybe.make(_elm);
+   var Model = Elm.Model.make(_elm);
+   var Native = Native || {};
+   Native.Ports = Elm.Native.Ports.make(_elm);
+   var Signal = Elm.Signal.make(_elm);
+   var String = Elm.String.make(_elm);
+   var Text = Elm.Text.make(_elm);
+   var Time = Elm.Time.make(_elm);
+   var _op = {};
+   var update = F2(function (action,
+   state) {
+      return function () {
+         switch (action.ctor)
+         {case "Add": switch (action._0)
+              {case "": return state;}
+              return {_: {}
+                     ,tasks: {ctor: "::"
+                             ,_0: A3(Model.Task,
+                             false,
+                             action._0,
+                             state.uid)
+                             ,_1: state.tasks}
+                     ,uid: state.uid + 1};
+            case "Remove":
+            return _U.replace([["tasks"
+                               ,A2(List.filter,
+                               function (task) {
+                                  return !_U.eq(task.id,
+                                  action._0);
+                               },
+                               state.tasks)]],
+              state);}
+         _E.Case($moduleName,
+         "between lines 8 and 21");
+      }();
+   });
+   _elm.Update.values = {_op: _op
+                        ,update: update};
+   return _elm.Update.values;
+};Elm.Model = Elm.Model || {};
+Elm.Model.make = function (_elm) {
+   "use strict";
+   _elm.Model = _elm.Model || {};
+   if (_elm.Model.values)
+   return _elm.Model.values;
+   var _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   _E = _N.Error.make(_elm),
+   _J = _N.JavaScript.make(_elm),
+   $moduleName = "Model";
+   var Basics = Elm.Basics.make(_elm);
+   var Color = Elm.Color.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Collage = Elm.Graphics.Collage.make(_elm);
+   var Graphics = Graphics || {};
+   Graphics.Element = Elm.Graphics.Element.make(_elm);
+   var List = Elm.List.make(_elm);
+   var Maybe = Elm.Maybe.make(_elm);
+   var Native = Native || {};
+   Native.Ports = Elm.Native.Ports.make(_elm);
+   var Signal = Elm.Signal.make(_elm);
+   var String = Elm.String.make(_elm);
+   var Text = Elm.Text.make(_elm);
+   var Time = Elm.Time.make(_elm);
+   var _op = {};
+   var Remove = function (a) {
+      return {ctor: "Remove"
+             ,_0: a};
+   };
+   var Add = function (a) {
+      return {ctor: "Add",_0: a};
+   };
+   var initialState = {_: {}
+                      ,tasks: _J.toList([])
+                      ,uid: 0};
+   var TodoState = F2(function (a,
+   b) {
+      return {_: {}
+             ,tasks: a
+             ,uid: b};
+   });
+   var Task = F3(function (a,b,c) {
+      return {_: {}
+             ,description: b
+             ,done: a
+             ,id: c};
+   });
+   _elm.Model.values = {_op: _op
+                       ,initialState: initialState
+                       ,Add: Add
+                       ,Remove: Remove
+                       ,Task: Task
+                       ,TodoState: TodoState};
+   return _elm.Model.values;
+};</script></head><body><script type="text/javascript">Elm.fullscreen(Elm.Todo)</script><noscript></noscript></body></html>
