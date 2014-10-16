@@ -4,6 +4,7 @@ import Model (Task)
 import Inputs (field, remove)
 import Graphics.Input as Input
 import Graphics.Input.Field as Field
+import Text as Text
 
 -- Constants for easy tweaking
 todoWidth   = 500
@@ -31,15 +32,15 @@ display (w,h) fieldContent tasks =
 header : Element
 header = 
     flow down
-      [ width todoWidth . centered . Text.color titleColor . Text.height 48 <| toText "todos"
+      [ width todoWidth << centered << Text.color titleColor << Text.height 48 <| toText "todos"
       , color spacerColor1 (spacer todoWidth 15)
       , color spacerColor2 (spacer todoWidth 1 ) ]
 
 inputBar : Field.Content -> Element
 inputBar fieldContent =
-    color inputColor . container todoWidth 45 midRight .
-    color inputColor . size (todoWidth - leftPadding) 45 <|
-        Field.field todoStyle field.handle id "What needs to be done?" fieldContent
+    color inputColor << container todoWidth 45 midRight <<
+    color inputColor << size (todoWidth - leftPadding) 45 <|
+        Field.field todoStyle field.handle identity "What needs to be done?" fieldContent
 
 todoStyle : Field.Style
 todoStyle =
@@ -53,12 +54,12 @@ todoStyle =
 displayTask : Task -> Element
 displayTask task =
     let btn clr =
-            let x = leftAligned . Text.height (taskHeight-4) . Text.color clr <| toText "X"
+            let x = leftAligned << Text.height (taskHeight-4) << Text.color clr <| toText "X"
             in  container buttonWidth taskHeight middle x
         taskWidth = todoWidth - leftPadding - buttonWidth
     in
-       color taskColor . container todoWidth taskHeight midRight <|
-       flow right [ container taskWidth taskHeight midLeft . leftAligned <| toText task.description
+       color taskColor << container todoWidth taskHeight midRight <|
+       flow right [ container taskWidth taskHeight midLeft << leftAligned <| toText task.description
                   , Input.customButton remove.handle task.id
                         (btn inputColor) (btn titleColor) (btn red)
                   ]

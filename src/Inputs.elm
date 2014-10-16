@@ -7,7 +7,7 @@ events, and from there, it will provide data to update our program.
 import Graphics.Input (Input, input)
 import Graphics.Input.Field as Field
 import Keyboard
-import Model (Action, Add, Remove)
+import Model (Action(Add, Remove))
 
 ----  Inputs  ----
 
@@ -38,4 +38,4 @@ actions = merge (Add <~ sampleOn entered (.string <~ field.signal))
 other signals. Actual value of this signal is not important.
 -}
 entered : Signal ()
-entered = always () <~ keepIf id True Keyboard.enter
+entered = always () <~ keepIf identity True Keyboard.enter
